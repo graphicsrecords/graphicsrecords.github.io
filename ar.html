@@ -219,6 +219,31 @@ a:focus-visible{outline:2px solid #E6C77A;outline-offset:3px}
 <p style="margin:0; max-width:48ch; letter-spacing:0; color:#A39A82">حدّثونا عن الشركة والسوق والموعد النهائي. نردّ عليكم بنطاق العمل وعرض السعر.</p>
 </div>
 <div style="flex:1 1 360px; min-width:0; display:flex; flex-direction:column">
+<form id="gr-form" action="https://api.web3forms.com/submit" method="POST" style="display:flex; flex-direction:column; gap:20px; border-top:1px solid rgba(201,162,75,0.45); padding-top:24px">
+<input type="hidden" name="access_key" value="53f6af2c-d05d-4049-813f-d66c56e5769a">
+<input type="hidden" name="subject" value="New enquiry - Graphics Records Web Design">
+<input type="hidden" name="from_name" value="Graphics Records Website">
+<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none">
+<label style="display:flex; flex-direction:column; gap:8px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:#C9A24B">الاسم</span><input type="text" name="name" required autocomplete="name" style="width:100%; box-sizing:border-box; background:#0B0A08; color:#EDE6D3; border:1px solid rgba(201,162,75,0.45); border-radius:0; padding:14px 14px; font-family:inherit; font-size:16px; line-height:1.4"></label>
+<label style="display:flex; flex-direction:column; gap:8px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:#C9A24B">البريد الإلكتروني</span><input type="email" name="email" required autocomplete="email" dir="ltr" style="width:100%; box-sizing:border-box; background:#0B0A08; color:#EDE6D3; border:1px solid rgba(201,162,75,0.45); border-radius:0; padding:14px 14px; font-family:inherit; font-size:16px; line-height:1.4"></label>
+<label style="display:flex; flex-direction:column; gap:8px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:#C9A24B">الشركة</span><input type="text" name="company" autocomplete="organization" style="width:100%; box-sizing:border-box; background:#0B0A08; color:#EDE6D3; border:1px solid rgba(201,162,75,0.45); border-radius:0; padding:14px 14px; font-family:inherit; font-size:16px; line-height:1.4"></label>
+<label style="display:flex; flex-direction:column; gap:8px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:#C9A24B">الرسالة</span><textarea name="message" required rows="5" style="width:100%; box-sizing:border-box; background:#0B0A08; color:#EDE6D3; border:1px solid rgba(201,162,75,0.45); border-radius:0; padding:14px 14px; font-family:inherit; font-size:16px; line-height:1.4; resize:vertical"></textarea></label>
+<button class="gold-btn" type="submit" style="align-self:flex-start; min-height:48px; padding:0 28px; background:#C9A24B; color:#0B0A08; border:1px solid #C9A24B; font-family:'IBM Plex Mono',ui-monospace,monospace; font-size:13px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer">إرسال الرسالة</button>
+<p id="gr-status" role="status" aria-live="polite" style="margin:0; min-height:1.6em; color:#E6C77A"></p>
+</form>
+<script>
+(function(){
+var f=document.getElementById('gr-form'),s=document.getElementById('gr-status'),b=f.querySelector('button');
+f.addEventListener('submit',function(ev){
+ev.preventDefault();s.textContent='جارٍ الإرسال…';b.disabled=true;
+fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(f)})
+.then(function(r){return r.json();})
+.then(function(d){if(d&&d.success){f.reset();s.textContent='شكرًا لكم. سنرد عليكم قريبًا.';}else{throw new Error('x');}})
+.catch(function(){s.textContent='حدث خطأ. يرجى المحاولة مرة أخرى.';})
+.then(function(){b.disabled=false;});
+});
+})();
+</script>
 </div>
 </div>
 </div>

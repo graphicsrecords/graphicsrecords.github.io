@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Tu página web · Graphics Records</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tu página web – 8 preguntas rápidas">
+<meta property="og:description" content="Toca tus respuestas, te toma 2 minutos. Graphics Records · Diseño Web">
+<meta property="og:url" content="https://graphicsrecords.github.io/artista/">
+<meta property="og:image" content="https://graphicsrecords.github.io/banner.jpg">
+<meta name="theme-color" content="#0B0A08">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=IBM+Plex+Mono:wght@400;500&family=Jost:wght@400;500;600&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0B0A08;--card:#14120E;--card2:#1B1813;--line:rgba(201,162,75,.28);--line2:rgba(201,162,75,.5);--text:#EDE6D3;--mut:#A39A82;--gold:#C9A24B;--gold2:#E6C77A;--gold3:#F3DDA0;--ink:#0B0A08}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Jost',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5;padding-bottom:140px}
+.wrap{max-width:580px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.2em}
+header{display:flex;align-items:center;gap:12px;padding:20px 0 16px;border-bottom:1px solid var(--line)}
+header .n{font-size:12px;color:var(--text)}
+header .s{font-size:10px;color:var(--mut)}
+.banner{display:block;width:100%;height:auto;aspect-ratio:1080/391;object-fit:cover;margin:20px 0 0;border:1px solid var(--line)}
+.eyebrow{font-size:11px;color:var(--gold);margin:26px 0 10px}
+h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:40px;line-height:1.08;margin:0 0 12px;color:var(--gold3)}
+.lead{color:var(--mut);margin:0 0 26px}
+.card{background:var(--card);border:1px solid var(--line);padding:20px 16px 18px;margin-bottom:14px;transition:border-color .2s}
+.card.done{border-color:var(--gold)}
+.qhead{display:flex;gap:12px;align-items:flex-start;margin-bottom:6px}
+.num{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid var(--gold);color:var(--gold2);font-family:'IBM Plex Mono',monospace;font-size:14px;display:grid;place-items:center;transition:.2s}
+.card.done .num{background:var(--gold);color:var(--ink)}
+.q{font-size:20px;font-weight:600;line-height:1.25;margin:3px 0 0}
+.hint{color:var(--mut);font-size:14.5px;margin:6px 0 14px 44px}
+.tag{font-size:10.5px;color:var(--mut);margin:0 0 12px 44px}
+.opts{display:grid;gap:9px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;font-size:17px;font-weight:500;color:var(--text);background:var(--card2);border:1px solid var(--line);padding:14px 14px;min-height:58px;cursor:pointer;transition:transform .08s,border-color .15s,background .15s}
+.opt:active{transform:scale(.985)}
+.opt:focus-visible,.field:focus{outline:2px solid var(--gold2);outline-offset:2px}
+.box{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--mut);display:grid;place-items:center;transition:.15s}
+.multi .box{border-radius:6px}
+.box svg{width:15px;height:15px;opacity:0;transform:scale(.6);transition:.15s}
+.opt.sel{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.opt.sel .box{background:var(--ink);border-color:var(--ink)}
+.opt.sel .box svg{opacity:1;transform:scale(1)}
+label.lbl{display:block;font-size:11px;color:var(--gold);margin:4px 0 8px}
+.field{width:100%;background:var(--bg);border:1px solid var(--line2);color:var(--text);font:inherit;font-size:17px;padding:13px 14px;border-radius:0}
+.field+label.lbl{margin-top:16px}
+textarea.field{min-height:88px;resize:vertical}
+.note{color:var(--mut);font-size:13px;text-align:center;margin:20px 0 0}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(11,10,8,.97);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:12px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.bar .in{max-width:580px;margin:0 auto}
+.cnt{text-align:center;color:var(--mut);font-size:10.5px;margin:0 0 8px}
+.prog{height:4px;background:#26221A;overflow:hidden;margin-bottom:10px}
+.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+.send{box-sizing:border-box;width:100%;border:1px solid var(--gold);padding:16px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.08em;white-space:nowrap;text-transform:uppercase;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;text-decoration:none}
+.send[aria-disabled="true"]{background:#24211B;border-color:#24211B;color:#7d7564;cursor:not-allowed}
+.send svg{width:20px;height:20px;flex:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<svg width="40" height="40" viewBox="0 0 44 44" role="img" aria-label="Graphics Records"><circle cx="22" cy="22" r="20" fill="none" stroke="#C9A24B" stroke-width="1"/><circle cx="22" cy="22" r="15" fill="none" stroke="#C9A24B" stroke-opacity="0.45" stroke-width="1"/><text x="22" y="28" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="18" fill="#E6C77A">GR</text></svg>
+<div><div class="mono n">Graphics Records</div><div class="mono s">Diseño Web</div></div>
+</header>
+
+<img class="banner" src="../banner.jpg" alt="Graphics Records">
+
+<p class="mono eyebrow">Tu página web · Brief</p>
+<h1>Hagamos crecer tu carrera</h1>
+<p class="lead">8 preguntas para diseñar tu web. Casi todas se responden tocando, te toma unos 2 minutos. Al final me envías tus respuestas por WhatsApp.</p>
+
+<section class="card" id="c1" data-q="1" data-text>
+<div class="qhead"><span class="num">1</span><p class="q">¿Cómo te llamas como artista y qué música haces?</p></div>
+<p class="hint">Tal como quieres que aparezca en la web.</p>
+<label class="lbl mono" for="f-name">Nombre artístico</label>
+<input class="field" id="f-name" type="text" autocomplete="off" placeholder="Ej. Juan Ríos">
+<label class="lbl mono" for="f-genre">Género musical</label>
+<input class="field" id="f-genre" type="text" autocomplete="off" placeholder="Ej. salsa, rock, urbano, vallenato…">
+</section>
+
+<section class="card" id="c2" data-q="2">
+<div class="qhead"><span class="num">2</span><p class="q">¿Qué es lo más importante que debe lograr tu web?</p></div>
+<p class="hint">Elige una. Así decidimos qué va primero.</p>
+<div class="opts">
+<button class="opt" type="button" data-v="Conseguir conciertos y contrataciones"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Conseguir conciertos y contrataciones</button>
+<button class="opt" type="button" data-v="Que escuchen mi música"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Que escuchen mi música</button>
+<button class="opt" type="button" data-v="Ganar seguidores"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Ganar seguidores</button>
+<button class="opt" type="button" data-v="Vender música o productos"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Vender música o productos</button>
+<button class="opt" type="button" data-v="Que me encuentren la prensa y los medios"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Que me encuentren la prensa y los medios</button>
+</div>
+</section>
+
+<section class="card multi" id="c3" data-q="3" data-multi>
+<div class="qhead"><span class="num">3</span><p class="q">¿Qué quieres que tenga tu web?</p></div>
+<p class="mono tag">Puedes marcar varias</p>
+<div class="opts">
+<button class="opt" type="button" data-v="Biografía"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Biografía</button>
+<button class="opt" type="button" data-v="Música (Spotify, YouTube)"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Música (Spotify, YouTube)</button>
+<button class="opt" type="button" data-v="Videos"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Videos</button>
+<button class="opt" type="button" data-v="Fechas de conciertos"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Fechas de conciertos</button>
+<button class="opt" type="button" data-v="Galería de fotos"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Galería de fotos</button>
+<button class="opt" type="button" data-v="Contacto para contrataciones"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Contacto para contrataciones</button>
+<button class="opt" type="button" data-v="Kit de prensa"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Kit de prensa</button>
+<button class="opt" type="button" data-v="Tienda"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Tienda</button>
+</div>
+</section>
+
+<section class="card multi" id="c4" data-q="4" data-multi>
+<div class="qhead"><span class="num">4</span><p class="q">¿Dónde está hoy tu música y tus redes?</p></div>
+<p class="mono tag">Puedes marcar varias</p>
+<div class="opts">
+<button class="opt" type="button" data-v="Spotify"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Spotify</button>
+<button class="opt" type="button" data-v="Apple Music"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Apple Music</button>
+<button class="opt" type="button" data-v="YouTube"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>YouTube</button>
+<button class="opt" type="button" data-v="Instagram"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Instagram</button>
+<button class="opt" type="button" data-v="TikTok"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>TikTok</button>
+<button class="opt" type="button" data-v="SoundCloud"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>SoundCloud</button>
+<button class="opt" type="button" data-v="Todavía no he publicado" data-excl><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Todavía no he publicado</button>
+</div>
+<label class="lbl mono" for="f-links" style="margin-top:16px">Pega aquí tus links (opcional)</label>
+<textarea class="field" id="f-links" placeholder="Ej. instagram.com/tunombre, open.spotify.com/artist/…"></textarea>
+</section>
+
+<section class="card" id="c5" data-q="5">
+<div class="qhead"><span class="num">5</span><p class="q">¿Tienes material listo?</p></div>
+<p class="hint">Fotos profesionales, logo, videos.</p>
+<div class="opts">
+<button class="opt" type="button" data-v="Sí, tengo todo"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Sí, tengo todo</button>
+<button class="opt" type="button" data-v="Algunas cosas"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Algunas cosas</button>
+<button class="opt" type="button" data-v="No, todavía no"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>No, todavía no</button>
+</div>
+</section>
+
+<section class="card" id="c6" data-q="6">
+<div class="qhead"><span class="num">6</span><p class="q">¿Tienes un dominio propio?</p></div>
+<p class="hint">El dominio es la dirección de tu web, por ejemplo <em>tunombre.com</em>.</p>
+<div class="opts">
+<button class="opt" type="button" data-v="Sí"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Sí</button>
+<button class="opt" type="button" data-v="No"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>No</button>
+<button class="opt" type="button" data-v="No sé qué es"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#E6C77A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>No sé qué es</button>
+</div>
+</section>
+
+<section class="card" id="c7">
+<div class="qhead"><span class="num">7</span><p class="q">¿Hay alguna fecha importante?</p></div>
+<p class="hint">Un lanzamiento, una gira, un concierto… Opcional.</p>
+<textarea class="field" id="f-date" aria-label="Fecha importante" placeholder="Ej. Lanzo mi sencillo el 15 de marzo"></textarea>
+</section>
+
+<section class="card" id="c8">
+<div class="qhead"><span class="num">8</span><p class="q">¿Hay artistas cuyas webs te gusten?</p></div>
+<p class="hint">Nombres o links, como referencia de estilo. Opcional.</p>
+<textarea class="field" id="f-refs" aria-label="Webs de referencia" placeholder="Ej. la web de…"></textarea>
+</section>
+
+<p class="note">Tus respuestas solo se envían cuando tocas el botón de WhatsApp.</p>
+</div>
+
+<div class="bar"><div class="in">
+<p class="mono cnt" id="cnt">0 de 6 respuestas</p>
+<div class="prog"><i id="prog"></i></div>
+<a class="send" id="send" role="button" aria-disabled="true" href="#" target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.93-4.66-4.11-.13-.18-1.11-1.48-1.11-2.83s.71-2.01.96-2.28c.25-.27.55-.34.73-.34l.52.01c.17.01.39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33z"/></svg>
+<span id="slabel">Faltan 6 respuestas</span>
+</a>
+</div></div>
+
+<script>
+(function(){
+var WA_NUMBER = "573107558960";
+var REQ = 6, ans = {2:'',3:[],4:[],5:'',6:''};
+var $ = function(id){return document.getElementById(id);};
+var name=$('f-name'), genre=$('f-genre'), links=$('f-links'), date=$('f-date'), refs=$('f-refs');
+var KEY='gr-artista-v1';
+
+function isDone(q){
+  if(q===1) return name.value.trim()!=='' && genre.value.trim()!=='';
+  return Array.isArray(ans[q]) ? ans[q].length>0 : !!ans[q];
+}
+function buildText(){
+  var L=[];
+  L.push('*Brief web – '+name.value.trim()+'*');
+  L.push('');
+  L.push('1. Nombre artístico: '+name.value.trim());
+  L.push('   Género: '+genre.value.trim());
+  L.push('2. Objetivo principal: '+ans[2]);
+  L.push('3. Secciones: '+ans[3].join(', '));
+  L.push('4. Plataformas: '+ans[4].join(', '));
+  if(links.value.trim()) L.push('   Links: '+links.value.trim());
+  L.push('5. Material listo: '+ans[5]);
+  L.push('6. Dominio propio: '+ans[6]);
+  L.push('7. Fecha importante: '+(date.value.trim()||'—'));
+  L.push('8. Webs de referencia: '+(refs.value.trim()||'—'));
+  return L.join('\n');
+}
+function upd(){
+  var n=0;
+  for(var q=1;q<=REQ;q++){ var d=isDone(q); if(d) n++; $('c'+q).classList.toggle('done',d); }
+  $('c7').classList.toggle('done',date.value.trim()!=='');
+  $('c8').classList.toggle('done',refs.value.trim()!=='');
+  $('cnt').textContent = n+' de '+REQ+' respuestas';
+  $('prog').style.width=(n/REQ*100)+'%';
+  var ok=n===REQ, b=$('send');
+  b.setAttribute('aria-disabled', ok?'false':'true');
+  b.href = ok ? 'https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(buildText()) : '#';
+  $('slabel').textContent = ok ? 'Enviar por WhatsApp' : (REQ-n===1 ? 'Falta 1 respuesta' : 'Faltan '+(REQ-n)+' respuestas');
+  save();
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify({ans:ans,name:name.value,genre:genre.value,links:links.value,date:date.value,refs:refs.value})); }catch(e){}
+}
+function restore(){
+  var s=null; try{ s=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
+  if(!s) return;
+  name.value=s.name||''; genre.value=s.genre||''; links.value=s.links||''; date.value=s.date||''; refs.value=s.refs||'';
+  [2,3,4,5,6].forEach(function(q){
+    var v=s.ans&&s.ans[q]; if(!v) return;
+    var card=$('c'+q), vals=Array.isArray(v)?v:[v];
+    card.querySelectorAll('.opt').forEach(function(o){ if(vals.indexOf(o.dataset.v)>-1) o.classList.add('sel'); });
+    ans[q]=Array.isArray(ans[q])?vals.slice():v;
+  });
+}
+
+document.querySelectorAll('.card[data-q] .opts').forEach(function(box){
+  var card=box.closest('.card'), q=+card.dataset.q, multi=card.hasAttribute('data-multi');
+  box.querySelectorAll('.opt').forEach(function(btn){
+    btn.setAttribute('aria-pressed','false');
+    btn.addEventListener('click',function(){
+      var v=btn.dataset.v;
+      if(!multi){
+        box.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');o.setAttribute('aria-pressed','false');});
+        btn.classList.add('sel'); btn.setAttribute('aria-pressed','true'); ans[q]=v;
+        var nx=card.nextElementSibling;
+        if(nx && nx.classList.contains('card')) setTimeout(function(){nx.scrollIntoView({behavior:'smooth',block:'center'});},260);
+      }else{
+        var on=!btn.classList.contains('sel');
+        if(btn.hasAttribute('data-excl')){
+          box.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');o.setAttribute('aria-pressed','false');});
+          ans[q]=[];
+        }else{
+          var ex=box.querySelector('.opt[data-excl]');
+          if(ex && ex.classList.contains('sel')){ ex.classList.remove('sel'); ex.setAttribute('aria-pressed','false'); ans[q]=ans[q].filter(function(x){return x!==ex.dataset.v;}); }
+        }
+        btn.classList.toggle('sel',on); btn.setAttribute('aria-pressed',on?'true':'false');
+        ans[q]=ans[q].filter(function(x){return x!==v;}); if(on) ans[q].push(v);
+      }
+      upd();
+    });
+  });
+});
+[name,genre,links,date,refs].forEach(function(el){ el.addEventListener('input',upd); });
+$('send').addEventListener('click',function(e){
+  if(this.getAttribute('aria-disabled')==='true'){
+    e.preventDefault();
+    for(var q=1;q<=REQ;q++){ if(!isDone(q)){ $('c'+q).scrollIntoView({behavior:'smooth',block:'center'}); break; } }
+  }
+});
+restore();
+// keep aria-pressed in sync after restore
+document.querySelectorAll('.opt.sel').forEach(function(o){o.setAttribute('aria-pressed','true');});
+upd();
+})();
+</script>
+</body>
+</html>

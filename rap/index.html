@@ -115,6 +115,11 @@
   #result h2{font-weight:400;color:var(--gold2);margin-top:0}
   #result .acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
   pre{text-align:left;background:#0c0c0c;border:1px solid #2f2819;padding:14px;border-radius:4px;max-height:320px;overflow:auto;white-space:pre-wrap;font-size:.82rem;color:var(--mut)}
+  .legal{margin-top:38px;padding-top:22px;border-top:1px solid var(--gold);text-align:center;color:var(--mut)}
+  .legal .c{color:var(--gold2);letter-spacing:.2em;font-size:.74rem;text-transform:uppercase}
+  .legal p{font-size:.72rem;line-height:1.8;letter-spacing:.03em;text-align:justify;hyphens:auto;margin:14px 0 0}
+  .legal .m{font-size:.68rem;color:#7d7560;text-align:center;letter-spacing:.06em}
+  .legal .pv{border:1px solid #2f2819;padding:10px 12px;margin-top:14px;font-size:.72rem;line-height:1.7;text-align:left}
   footer{text-align:center;color:var(--mut);font-size:.75rem;margin-top:34px;letter-spacing:.2em;text-transform:uppercase}
 </style>
 </head>
@@ -332,7 +337,7 @@
   </form>
 
   <section id="result">
-    <h2>Encuesta completada</h2>
+    <h2 id="rt">Enviando su encuesta…</h2>
     <p id="st">Enviando sus respuestas…</p>
     <div class="acts">
       <button class="pri" id="dl">Descargar respuestas</button>
@@ -343,6 +348,12 @@
     <pre id="out"></pre>
   </section>
 
+  <div class="legal">
+    <div class="c">© 2026 Graphics Records · Todos los derechos reservados</div>
+    <p>Todo el contenido de esta página, incluidos diseños, composiciones, textos, imágenes, código fuente, marcas y logotipos, es propiedad exclusiva de Graphics Records y está protegido por la legislación aplicable en materia de derechos de autor y propiedad intelectual. Queda estrictamente prohibida su reproducción, distribución, comunicación pública, modificación o uso comercial, total o parcial, sin la autorización previa y por escrito de Graphics Records.</p>
+    <div class="pv"><strong style="color:var(--gold2)">Confidencialidad de la información.</strong> Los datos suministrados en esta encuesta se tratan con estricta reserva y se utilizan únicamente para elaborar la propuesta y el desarrollo de su proyecto web. No se ceden a terceros.</div>
+    <p class="m">El nombre Graphics Records y su logotipo son propiedad de su titular. Los demás nombres mencionados pertenecen a sus respectivos propietarios.</p>
+  </div>
   <footer>Graphics Records · Design &amp; Web Development</footer>
 </div>
 
@@ -366,9 +377,9 @@ async function enviar(txt){
         from_name:'Graphics Records · Encuesta de artista',name:document.getElementById('nombreArt').value.trim(),
         email:document.getElementById('email').value.trim(),message:txt})});
     const j=await r.json();
-    if(j.success){st.textContent='✓ Sus respuestas llegaron a Graphics Records. Le contactaremos muy pronto.';return}
+    if(j.success){document.getElementById('rt').textContent='✓ Correo enviado con éxito';st.textContent='Sus respuestas llegaron a Graphics Records. Le contactaremos muy pronto.';st.style.cssText='color:#e8cf8a;font-size:1.05rem';return}
     throw new Error(j.message||'error');
-  }catch(e){enviado=false;st.textContent='No se pudo enviar automáticamente. Descargue o copie sus respuestas y envíelas por WhatsApp o correo.'}
+  }catch(e){enviado=false;document.getElementById('rt').textContent='Encuesta completada';st.textContent='No se pudo enviar automáticamente. Descargue o copie sus respuestas y envíelas por WhatsApp o correo.'}
 }
 const secs=[...document.querySelectorAll('fieldset.sec')];
 const fill=document.getElementById('fill'),lbl=document.getElementById('steplbl');

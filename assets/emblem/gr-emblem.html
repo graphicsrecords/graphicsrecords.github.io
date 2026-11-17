@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GR — Insignia · Graphics Records Design</title>
+<style>
+  :root{--gold:#d4af57;--bg:#060504;--mono:ui-monospace,Menlo,Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg);color:var(--gold);overflow:hidden}
+  body{display:grid;place-items:center;font-family:var(--mono);
+    background:
+      radial-gradient(circle at 50% 48%,rgba(212,175,87,.13),transparent 58%),
+      linear-gradient(rgba(205,214,228,.035) 1px,transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg,rgba(205,214,228,.035) 1px,transparent 1px) 0 0/48px 48px,
+      var(--bg)}
+  main{display:flex;flex-direction:column;align-items:center;gap:2vh;padding:2vh}
+  canvas{width:min(90vw,76vh,720px);aspect-ratio:1;display:block;filter:drop-shadow(0 0 36px rgba(212,175,87,.16))}
+  .cap{font-size:clamp(8px,1.1vw,11px);letter-spacing:.3em;text-transform:uppercase;color:#9aa3b2;text-align:center;min-height:1.4em}
+  html.embed,html.embed body{background:transparent}
+  html.embed body{background-image:none}
+  html.embed .cap{display:none}
+  html.embed main{padding:0;gap:0}
+  html.embed canvas{width:min(100vw,100vh);filter:none}
+</style>
+</head>
+<body>
+<main>
+  <canvas id="c" role="img" aria-label="GR insignia inside a rotating ring of lettering, armillary sphere and sacred geometry"></canvas>
+  <div class="cap" id="fig">Graphics Records Design · Insignia GR</div>
+</main>
+<script>
+if(location.search.indexOf('embed')>-1) document.documentElement.classList.add('embed');
+(()=>{
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cv = document.getElementById('c'), cx = cv.getContext('2d');
+  const dpr = Math.min(devicePixelRatio||1, 3);
+  let GW = 600, rot = 0, tilt = -0.42, t0 = 0;
+  const TAU = Math.PI*2, SQ3 = Math.sqrt(3);
+  const SERIF = '"Cormorant Garamond","Palatino Linotype",Palatino,Georgia,serif';
+  const G = 'rgba(212,175,87,', S = 'rgba(205,214,228,';
+  const clamp01 = v => Math.max(0,Math.min(1,v));
+
+  function size(){
+    const w = Math.round(cv.getBoundingClientRect().width) || 600;
+    GW = w; cv.width = w*dpr; cv.height = w*dpr; cx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  addEventListener('resize', size);
+
+  /* ---------- armillary sphere ---------- */
+  function proj(lat,lon,R){
+    const x = Math.cos(lat)*Math.sin(lon+rot), y = Math.sin(lat), z = Math.cos(lat)*Math.cos(lon+rot);
+    const y2 = y*Math.cos(tilt) - z*Math.sin(tilt), z2 = y*Math.sin(tilt) + z*Math.cos(tilt);
+    return {x:GW/2 + x*R, y:GW/2 - y2*R, z:z2};
+  }
+  function meridian(lonDeg,R){ const p=[]; for(let d=-90; d<=270; d+=4) p.push(proj(d*Math.PI/180, lonDeg*Math.PI/180, R)); return p; }
+  function parallel(latDeg,R){ const p=[]; for(let d=0; d<=360; d+=4) p.push(proj(latDeg*Math.PI/180, d*Math.PI/180, R)); return p; }
+  function strokeSide(pts, front){
+    cx.beginPath(); let pen=false;
+    for(let i=1;i<pts.length;i++){
+      const a=pts[i-1], b=pts[i], f=(a.z+b.z)/2>=0;
+      if(f===front){ if(!pen){cx.moveTo(a.x,a.y); pen=true;} cx.lineTo(b.x,b.y); } else pen=false;
+    }
+    cx.stroke();
+  }
+
+  /* ---------- rotating lettering ring (one full wheel) ---------- */
+  const WHEEL = ['GRAPHICS RECORDS DESIGN','PRIVATE DIGITAL ATELIER'];
+  function wheelText(radius, spin){
+    cx.save(); cx.translate(GW/2,GW/2);
+    const fs = GW*0.037;
+    cx.font = `600 ${fs}px ${SERIF}`; cx.fillStyle = '#dde3ee'; cx.textAlign='center'; cx.textBaseline='middle';
+    const items = [];
+    WHEEL.forEach(s=>{ [...s].forEach(ch=>items.push({ch, w: ch===' ' ? fs*0.5 : cx.measureText(ch).width})); items.push({d:1, w: fs*1.1}); });
+    const base = items.reduce((a,b)=>a+b.w,0), circ = TAU*radius;
+    const gap = (circ-base)/items.length;
+    let a = spin;
+    items.forEach(it=>{
+      const w = it.w+gap, mid = a + (w/2)/radius;
+      cx.save(); cx.rotate(mid+Math.PI/2); cx.translate(0,-radius);
+      if(it.d){ const s=fs*0.34; cx.fillStyle='#f0d98c'; cx.beginPath(); cx.moveTo(0,-s); cx.lineTo(s,0); cx.lineTo(0,s); cx.lineTo(-s,0); cx.closePath(); cx.fill(); }
+      else if(it.ch!==' ') cx.fillText(it.ch,0,0);
+      cx.restore(); a += w/radius;
+    });
+    cx.restore();
+  }
+
+  /* ---------- sacred geometry sets ---------- */
+  const C = (x,y,r)=>({k:'c',x,y,r}), L = (x1,y1,x2,y2)=>({k:'l',x1,y1,x2,y2});
+  const pol = (a,r)=>[Math.cos(a)*r, Math.sin(a)*r];
+  const poly = (pts)=>pts.map((p,i)=>{const q=pts[(i+1)%pts.length]; return L(p[0],p[1],q[0],q[1])});
+  function flower(){
+    const r = 1/3, out=[];
+    for(let ring=0; ring<=2; ring++)
+      for(let i=-2;i<=2;i++) for(let j=-2;j<=2;j++){
+        if(Math.max(Math.abs(i),Math.abs(j),Math.abs(i+j))!==ring) continue;
+        out.push(C(r*(i+j/2), r*(j*SQ3/2), r));
+      }
+    out.push(C(0,0,1)); return out;
+  }
+  function seed(){
+    const r=.5, out=[C(0,0,r)], hex=[];
+    for(let k=0;k<6;k++){ const [x,y]=pol(k*Math.PI/3,r); out.push(C(x,y,r)); hex.push([x,y]); }
+    out.push(C(0,0,1)); return out.concat(poly(hex));
+  }
+  function metatron(){
+    const d=.4, pts=[[0,0]], out=[];
+    for(let k=0;k<6;k++) pts.push(pol(k*Math.PI/3,d));
+    for(let k=0;k<6;k++) pts.push(pol(k*Math.PI/3,2*d));
+    pts.forEach(p=>out.push(C(p[0],p[1],d/2)));
+    out.push(C(0,0,1));
+    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++) out.push(L(pts[i][0],pts[i][1],pts[j][0],pts[j][1]));
+    return out;
+  }
+  function vesica(){
+    const r=.62, cc=.38, cs=[];
+    for(let k=0;k<3;k++) cs.push(pol(-Math.PI/2+k*TAU/3, cc));
+    const out = cs.map(p=>C(p[0],p[1],r));
+    out.push(C(0,0,1)); out.push(C(0,0,.18));
+    return out.concat(poly(cs));
+  }
+  function merkaba(){
+    const up=[],dn=[],hex=[];
+    for(let k=0;k<3;k++){ up.push(pol(-Math.PI/2+k*TAU/3,1)); dn.push(pol(Math.PI/2+k*TAU/3,1)); }
+    for(let k=0;k<6;k++) hex.push(pol(k*Math.PI/3, 1/SQ3));
+    return [C(0,0,1),C(0,0,.5),C(0,0,1/SQ3)].concat(poly(up),poly(dn),poly(hex), hex.map(p=>L(0,0,p[0],p[1])));
+  }
+  function dodeca(){
+    const pts=[], out=[C(0,0,1), C(0,0,Math.cos(5*Math.PI/12)), C(0,0,.5)];
+    for(let k=0;k<12;k++) pts.push(pol(-Math.PI/2+k*TAU/12,1));
+    for(let k=0;k<12;k++){ const p=pts[k], q=pts[(k+5)%12]; out.push(L(p[0],p[1],q[0],q[1])); }
+    for(let k=0;k<12;k++){ const p=pts[k], q=pts[(k+2)%12]; out.push(L(p[0],p[1],q[0],q[1])); }
+    return out;
+  }
+  const SETS = [
+    {n:'Flos Vitae · Flower of Life',   p:flower()},
+    {n:'Semen Vitae · Seed of Life',    p:seed()},
+    {n:'Cubus Metatron · Metatron’s Cube', p:metatron()},
+    {n:'Vesica Piscis',                 p:vesica()},
+    {n:'Stella Merkaba',                p:merkaba()},
+    {n:'Dodecagramma',                  p:dodeca()}
+  ];
+  const figEl = document.getElementById('fig'); let lastIdx = -1;
+  const CYCLE = 9500, DRAW = 4200, FADE = 1500;
+
+  function sacred(t, c, Rg){
+    const idx = reduce ? 0 : Math.floor(t/CYCLE) % SETS.length;
+    const local = reduce ? DRAW : t % CYCLE;
+    if(idx!==lastIdx){ lastIdx=idx; figEl.textContent = 'Graphics Records Design · '+SETS[idx].n; }
+    const prog = clamp01(local/DRAW);
+    const fade = local > CYCLE-FADE ? 1-(local-(CYCLE-FADE))/FADE : 1;
+    const prims = SETS[idx].p, n = prims.length;
+    cx.save(); cx.translate(c,c);
+    cx.rotate(reduce ? 0 : t*0.000028*(idx%2?-1:1) + idx*0.4);
+    cx.lineWidth = 1;
+    let tip = null;
+    for(let i=0;i<n;i++){
+      const q = clamp01((prog - i/n*0.6)/0.4);
+      if(q<=0) continue;
+      const e = 1-Math.pow(1-q,2), pr = prims[i];
+      cx.strokeStyle = S+(.5*fade)+')'; cx.beginPath();
+      if(pr.k==='c'){
+        cx.arc(pr.x*Rg, pr.y*Rg, pr.r*Rg, -Math.PI/2, -Math.PI/2+TAU*e);
+        if(q<1) tip=[pr.x*Rg+Math.cos(-Math.PI/2+TAU*e)*pr.r*Rg, pr.y*Rg+Math.sin(-Math.PI/2+TAU*e)*pr.r*Rg];
+      } else {
+        const x1=pr.x1*Rg, y1=pr.y1*Rg, x2=pr.x2*Rg, y2=pr.y2*Rg;
+        cx.moveTo(x1,y1); cx.lineTo(x1+(x2-x1)*e, y1+(y2-y1)*e);
+        if(q<1) tip=[x1+(x2-x1)*e, y1+(y2-y1)*e];
+      }
+      cx.stroke();
+    }
+    if(tip && fade===1){
+      const g = cx.createRadialGradient(tip[0],tip[1],0,tip[0],tip[1],GW*0.02);
+      g.addColorStop(0,'rgba(255,240,190,.95)'); g.addColorStop(1,'rgba(212,175,87,0)');
+      cx.fillStyle=g; cx.beginPath(); cx.arc(tip[0],tip[1],GW*0.02,0,TAU); cx.fill();
+    }
+    cx.restore();
+  }
+
+  /* ---------- the GR monogram (one continuous line) ---------- */
+  const NS='http://www.w3.org/2000/svg';
+  const MONO = ["M142.9 84A56 56 0 1 0 156 120H122","M156 64V176","M156 64H176A28 28 0 0 1 176 120H156","M170 120L204 176"].map(d=>{
+    const el=document.createElementNS(NS,'path'); el.setAttribute('d',d);
+    return {p:new Path2D(d), el, len:el.getTotalLength()};
+  });
+  const TOTAL = MONO.reduce((a,m)=>a+m.len,0);
+  function sparkPos(dist){
+    for(const m of MONO){ if(dist<=m.len){ const q=m.el.getPointAtLength(dist); return [q.x,q.y]; } dist-=m.len; }
+    const m=MONO[MONO.length-1], q=m.el.getPointAtLength(m.len); return [q.x,q.y];
+  }
+  const T0 = 500, STEP = 380, DUR = 1300, DONE = T0+3*STEP+DUR;
+
+  function monogram(t, c, s){
+    const breathe = reduce ? .6 : (Math.sin(t*.0017)+1)/2;
+    const dx = reduce?0:Math.sin(t*.00042)*GW*0.0045, dy = reduce?0:Math.cos(t*.00031)*GW*0.0035;
+
+    // soft dark pool behind the letters so they lift off the lines
+    const pool = cx.createRadialGradient(c,c,0,c,c,GW*0.215);
+    pool.addColorStop(0,'rgba(8,6,3,.82)'); pool.addColorStop(.62,'rgba(8,6,3,.55)'); pool.addColorStop(1,'rgba(8,6,3,0)');
+    cx.fillStyle=pool; cx.beginPath(); cx.arc(c,c,GW*0.215,0,TAU); cx.fill();
+    // breathing golden halo
+    const halo = cx.createRadialGradient(c,c,GW*0.05,c,c,GW*0.23);
+    halo.addColorStop(0,'rgba(212,175,87,'+(.10+.10*breathe)+')'); halo.addColorStop(1,'rgba(212,175,87,0)');
+    cx.fillStyle=halo; cx.beginPath(); cx.arc(c,c,GW*0.23,0,TAU); cx.fill();
+
+    cx.save(); cx.translate(c+dx,c+dy); cx.scale(s,s); cx.translate(-124,-120);
+    cx.lineJoin='miter'; cx.lineCap='butt'; cx.miterLimit=4;
+    const gm = cx.createLinearGradient(0,59,0,181);
+    gm.addColorStop(0,'#fff0bd'); gm.addColorStop(.35,'#e6c675'); gm.addColorStop(.62,'#d4af57'); gm.addColorStop(1,'#8d6a20');
+    const prog = MONO.map((m,i)=>{ const q = reduce ? 1 : clamp01((t-T0-i*STEP)/DUR); return 1-Math.pow(1-q,3); });
+
+    // 1) glow + silver rim + gold body (two-metal inlay)
+    const sm = cx.createLinearGradient(0,59,0,181);
+    sm.addColorStop(0,'#ffffff'); sm.addColorStop(.5,'#c9d1de'); sm.addColorStop(1,'#7f8999');
+    MONO.forEach((m,i)=>{
+      if(prog[i]<=0) return;
+      cx.setLineDash([m.len, m.len+40]); cx.lineDashOffset = m.len*(1-prog[i]);
+      cx.shadowColor = 'rgba(225,200,130,'+(.3+.35*breathe)+')'; cx.shadowBlur = GW*(.018+.022*breathe)*dpr;
+      cx.lineWidth = 13; cx.strokeStyle = sm; cx.stroke(m.p);
+    });
+    cx.shadowBlur = 0; cx.shadowColor='transparent';
+    MONO.forEach((m,i)=>{
+      if(prog[i]<=0) return;
+      cx.setLineDash([m.len, m.len+40]); cx.lineDashOffset = m.len*(1-prog[i]);
+      cx.lineWidth = 9.6; cx.strokeStyle = gm; cx.stroke(m.p);
+    });
+    cx.shadowBlur = 0; cx.shadowColor='transparent';
+    // 2) bevel: bright upper edge, dark engraved centre line
+    MONO.forEach((m,i)=>{
+      if(prog[i]<=0) return;
+      cx.setLineDash([m.len, m.len+40]); cx.lineDashOffset = m.len*(1-prog[i]);
+      cx.lineWidth = 3; cx.strokeStyle = 'rgba(255,244,205,.5)'; cx.stroke(m.p);
+      cx.lineWidth = 1.1; cx.strokeStyle = 'rgba(11,9,6,.8)'; cx.stroke(m.p);
+    });
+    cx.setLineDash([]);
+
+    if(reduce || t>DONE){
+      const e = reduce ? 0 : t-DONE;
+      // 3) light sweep, every ~5 s
+      const ph = (e%5200)/5200, pos = -60 + ph*1.9*220;
+      if(!reduce && ph<0.55){
+        const sh = cx.createLinearGradient(pos-24,40,pos+84,200);
+        sh.addColorStop(0,'rgba(240,245,255,0)'); sh.addColorStop(.5,'rgba(245,249,255,.95)'); sh.addColorStop(1,'rgba(240,245,255,0)');
+        cx.lineWidth = 13; cx.strokeStyle = sh; MONO.forEach(m=>cx.stroke(m.p));
+      }
+      // 4) spark running along the single continuous line, G into R
+      if(!reduce){
+        const sp = (e%6400)/6400, d = sp*TOTAL, pt = sparkPos(d);
+        const a = Math.sin(Math.PI*sp);
+        const g = cx.createRadialGradient(pt[0],pt[1],0,pt[0],pt[1],16);
+        g.addColorStop(0,'rgba(250,252,255,'+(.95*a)+')'); g.addColorStop(.35,'rgba(215,225,240,'+(.45*a)+')'); g.addColorStop(1,'rgba(205,214,228,0)');
+        cx.fillStyle=g; cx.beginPath(); cx.arc(pt[0],pt[1],16,0,TAU); cx.fill();
+        cx.strokeStyle='rgba(250,252,255,'+(.85*a)+')'; cx.lineWidth=.9;
+        const k=15*a; cx.beginPath(); cx.moveTo(pt[0]-k,pt[1]); cx.lineTo(pt[0]+k,pt[1]); cx.moveTo(pt[0],pt[1]-k); cx.lineTo(pt[0],pt[1]+k); cx.stroke();
+      }
+    }
+    cx.restore();
+  }
+
+  /* ---------- frame ---------- */
+  function draw(t){
+    const c = GW/2, Ro = GW*0.47, Rm = GW*0.415, Ri = GW*0.352, R = GW*0.235;
+    cx.clearRect(0,0,GW,GW); cx.lineWidth = 1;
+
+    // blueprint axes + sacred geometry
+    cx.strokeStyle = S+'.16)';
+    cx.beginPath(); cx.moveTo(c-Ro,c); cx.lineTo(c+Ro,c); cx.moveTo(c,c-Ro); cx.lineTo(c,c+Ro); cx.stroke();
+    sacred(t, c, Ri*0.965);
+
+    // rings: brushed two-metal outer bezel (gold ⇄ silver), silver inner rings
+    const bez = cx.createConicGradient ? cx.createConicGradient(t*0.00006, c, c) : null;
+    if(bez){ [['0','#f6e3a1'],['.14','#d4af57'],['.28','#eef2f8'],['.42','#9aa3b2'],['.5','#f6e3a1'],['.64','#d4af57'],['.78','#eef2f8'],['.92','#9aa3b2'],['1','#f6e3a1']].forEach(([o,col])=>bez.addColorStop(+o,col)); }
+    cx.strokeStyle = bez || G+'.9)'; cx.lineWidth = 2.2;
+    cx.beginPath(); cx.arc(c,c,Ro,0,TAU); cx.stroke();
+    cx.lineWidth = 1; cx.strokeStyle = S+'.55)';
+    cx.beginPath(); cx.arc(c,c,Ro-GW*0.011,0,TAU); cx.stroke();
+    cx.strokeStyle = S+'.5)';
+    cx.beginPath(); cx.arc(c,c,Rm+GW*0.030,0,TAU); cx.stroke();
+    cx.beginPath(); cx.arc(c,c,Rm-GW*0.030,0,TAU); cx.stroke();
+    cx.strokeStyle = bez || S+'.8)'; cx.lineWidth = 1.2;
+    cx.beginPath(); cx.arc(c,c,Ri,0,TAU); cx.stroke();
+    for(let i=0;i<120;i++){
+      const a = i/120*TAU - t*0.00006, major = i%10===0, l = major ? GW*0.022 : GW*0.009;
+      cx.strokeStyle = major ? G+'.95)' : S+'.6)'; cx.lineWidth = major ? 1.4 : 1;
+      cx.beginPath(); cx.moveTo(c+Math.cos(a)*Ri, c+Math.sin(a)*Ri); cx.lineTo(c+Math.cos(a)*(Ri-l), c+Math.sin(a)*(Ri-l)); cx.stroke();
+    }
+    // rotating wheel of lettering
+    wheelText(Rm, reduce ? -Math.PI/2 : -Math.PI/2 + t*0.00007);
+
+    // armillary sphere — back
+    const rings = [parallel(0,R), parallel(45,R), parallel(-45,R), meridian(0,R), meridian(60,R), meridian(120,R)];
+    cx.strokeStyle = S+'.18)'; rings.forEach(p=>strokeSide(p,false));
+
+    // armillary sphere — front
+    cx.strokeStyle = S+'.6)'; cx.lineWidth = 1; rings.forEach(p=>strokeSide(p,true));
+    [[0,0],[45,70],[-45,200],[20,300]].forEach(([la,lo],i)=>{
+      const p = proj(la*Math.PI/180, lo*Math.PI/180, R);
+      if(p.z<0) return;
+      const pulse = (Math.sin(t*.004+i*1.7)+1)/2;
+      cx.fillStyle = '#f0d98c'; cx.fillRect(p.x-1.5,p.y-1.5,3,3);
+      cx.strokeStyle = G+(.5*pulse)+')'; cx.beginPath(); cx.arc(p.x,p.y,3+pulse*6,0,TAU); cx.stroke();
+    });
+    // the monogram sits above every effect
+    monogram(t, c, GW*0.00232);
+
+    // cardinal diamonds
+    [[0,-1],[1,0],[0,1],[-1,0]].forEach(([dx,dy])=>{
+      const x=c+dx*Ro, y=c+dy*Ro, s=GW*0.014;
+      cx.fillStyle='#060504'; cx.strokeStyle='#e6c675'; cx.lineWidth=1.3;
+      cx.beginPath(); cx.moveTo(x,y-s); cx.lineTo(x+s,y); cx.lineTo(x,y+s); cx.lineTo(x-s,y); cx.closePath(); cx.fill(); cx.stroke();
+    });
+  }
+
+  function frame(t){
+    if(!reduce) rot += (t-t0)*0.00032;
+    t0 = t; draw(t); requestAnimationFrame(frame);
+  }
+  size(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
